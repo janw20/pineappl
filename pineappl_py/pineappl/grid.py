@@ -1,3 +1,5 @@
+from enum import IntFlag, auto
+
 import numpy as np
 
 from .fk_table import FkTable
@@ -47,6 +49,16 @@ class Order(PyWrapper):
 
         """
         return PyOrder.create_mask([o._raw for o in orders], max_as, max_al, logs)
+
+
+class GridOptFlags(IntFlag):
+    OPTIMIZE_SUBGRID_TYPE = 0b1
+    STATIC_SCALE_DETECTION = 0b10
+    SYMMETRIZE_CHANNELS = 0b100
+    STRIP_EMPTY_ORDERS = 0b1000
+    MERGE_SAME_CHANNELS = 0b10000
+    STRIP_EMPTY_CHANNELS = 0b10_0000
+    ALL = OPTIMIZE_SUBGRID_TYPE | STATIC_SCALE_DETECTION | SYMMETRIZE_CHANNELS | STRIP_EMPTY_ORDERS | MERGE_SAME_CHANNELS | STRIP_EMPTY_CHANNELS
 
 
 class Grid(PyWrapper):
@@ -450,3 +462,17 @@ class Grid(PyWrapper):
             list of indices of bins to removed
         """
         self.raw.delete_bins(np.array(bin_indices, dtype=np.uint))
+    
+    def optimize(self):
+        """Optimize grid content."""
+        self.raw.optimize()
+
+    def optimize_using(self, flags: GridOptFlags):
+        """Optimize the grid.
+
+        Parameters
+        ----------
+        flags : GridOptFlags
+            optimization flags
+        """
+        self.raw.optimize_using(flags)

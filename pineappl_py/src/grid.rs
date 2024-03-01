@@ -1,5 +1,5 @@
 use pineappl::evolution::OperatorInfo;
-use pineappl::grid::{Grid, Ntuple, Order};
+use pineappl::grid::{Grid, GridOptFlags, Ntuple, Order};
 
 #[allow(deprecated)]
 use pineappl::grid::{EkoInfo, GridAxes};
@@ -674,6 +674,11 @@ impl PyGrid {
     /// **Usage:** `yadism`
     pub fn optimize(&mut self) {
         self.grid.optimize();
+    }
+
+    /// Optimize grid content. The parameter `flags` determines which optimizations are applied.
+    pub fn optimize_using(&mut self, flags: u32) {
+        self.grid.optimize_using(GridOptFlags::from_bits(flags).unwrap());
     }
 
     /// Merge grid with another one
