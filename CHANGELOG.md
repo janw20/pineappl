@@ -7,13 +7,53 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- fixed yet another problem that prevent the Python interface for Python 3.6
+  from being successfully installed
+
+## [0.7.3] - 23/02/2024
+
+### Fixed
+
+- fixed a problem that prevent the Python interface for Python 3.6 from being
+  successfully installed
+
+## [0.7.2] - 23/02/2024
+
+### Fixed
+
+- fixed problems in the CI that prevented the CAPI for Linux being uploaded
+
+## [0.7.1] - 23/02/2024
+
+### Fixed
+
+- fixed problems in the CI that prevented the previous version from being
+  released
+
+## [0.7.0] - 23/02/2024
+
+### Added
+
+- added a new global option `--allow-extrapolation`, which, when present,
+  allows LHAPDF to extrapolate PDF values outside its valid region in `x`.
+  If this option is not present the PDFs are set to zero, which remains the
+  default behavior
+
 ### Changed
 
+- the Python interface for MacOS is now shipped separately for the two targets
+  (aarch64 and x86_64) instead of a single universal wheel previously
 - raised MSRV to 1.70.0
 - when calling `BinRemapper::new`, the limits are now checked for overlaps, in
   which case a new error is returned
 - changed the type `ParseBinRemapperError` to allow capturing errors from
   `BinRemapper::new`
+
+### Fixed
+
+- fixed the missing generation of CPython 3.7 to 3.10 wheels for MacOS targets
 
 ### Removed
 
@@ -495,7 +535,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - first release
 
-[Unreleased]: https://github.com/NNPDF/pineappl/compare/v0.6.3...HEAD
+[Unreleased]: https://github.com/NNPDF/pineappl/compare/v0.7.3...HEAD
+[0.7.3]: https://github.com/NNPDF/pineappl/compare/v0.7.2...v0.7.3
+[0.7.2]: https://github.com/NNPDF/pineappl/compare/v0.7.1...v0.7.2
+[0.7.1]: https://github.com/NNPDF/pineappl/compare/v0.7.0...v0.7.1
+[0.7.0]: https://github.com/NNPDF/pineappl/compare/v0.6.3...v0.7.0
 [0.6.3]: https://github.com/NNPDF/pineappl/compare/v0.6.2...v0.6.3
 [0.6.2]: https://github.com/NNPDF/pineappl/compare/v0.6.1...v0.6.2
 [0.6.1]: https://github.com/NNPDF/pineappl/compare/v0.6.0...v0.6.1

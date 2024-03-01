@@ -13,7 +13,7 @@ Here is an alphabetically ordered list of all documentation:
 - [Changelog](../CHANGELOG.md): a list of additions and changes for all
   released and unreleased versions of PineAPPL.
 - [Grid repository](https://github.com/NNPDF/pineapplgrids/): pre-computed grids
-  for specific experimental setups (currently private).
+  for specific experimental setups.
 - [Installation](installation.md): installation instructions.
 - [Madgraph5_aMC@NLO](mg5_aMC.md): how to create PineAPPL grids with
   [Madgraph5_aMC@NLO](https://launchpad.net/mg5amcnlo/).
@@ -38,3 +38,5 @@ Another way to learn using the APIs is to have a look/modify the
 
 - [Contribution guidelines](../CONTRIBUTING.md): technical guidelines for how
   to contribute to PineAPPL's development.
+- [Maintainer's guide](maintainers-guide.md): Notes for maintainers:
+  explanations and where to find documentation

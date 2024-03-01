@@ -1,55 +1,29 @@
 use anyhow::Result;
-use std::env;
-use std::path::Path;
+use clap::Parser;
+use enum_dispatch::enum_dispatch;
 
-fn main() -> Result<()> {
-    let args: Vec<_> = env::args().skip(1).collect();
+mod install_manpages;
 
-    match args.as_slice() {
-        [cmd, path] if cmd == "install-manpages" => install_manpages(Path::new(path)),
-        _ => todo!(),
-    }
+#[enum_dispatch]
+pub trait Subcommand {
+    fn run(&self) -> Result<()>;
 }
 
-fn install_manpages(path: &Path) -> Result<()> {
-    use clap::CommandFactory;
-    use clap_mangen::Man;
-    use std::fs::File;
-    use std::io::BufWriter;
+#[enum_dispatch(Subcommand)]
+#[derive(Parser)]
+pub enum SubcommandEnum {
+    InstallManpages(install_manpages::Opts),
+}
 
-    fn render_manpages(path: &Path, cmd: &clap::Command) -> Result<()> {
-        let name = cmd
-            .get_bin_name()
-            .unwrap_or(cmd.get_name())
-            .replace(" ", "-");
-        let version = cmd
-            .get_version()
-            .map(|version| version.strip_prefix('v').unwrap().to_string());
+#[derive(Parser)]
+#[command(about, arg_required_else_help = true, disable_help_subcommand = true)]
+pub struct Opts {
+    #[command(subcommand)]
+    pub subcommand: SubcommandEnum,
+}
 
-        // set the correct name of the command
-        let mut man_cmd = cmd.clone().name(name.clone());
+fn main() -> Result<()> {
+    let opts = Opts::parse();
 
-        // if there is a version, remove the 'v'
-        if let Some(version) = version {
-            man_cmd = man_cmd.version(version);
-        }
-
-        Man::new(man_cmd).render(&mut BufWriter::new(File::create(
-            path.join(format!("{name}.1")),
-        )?))?;
-
-        for subcmd in cmd.get_subcommands() {
-            render_manpages(path, subcmd)?;
-        }
-
-        Ok(())
-    }
-
-    let mut cmd = pineappl_cli::Opts::command();
-    // this is needed so subcommands return the correct `bin_name`
-    cmd.build();
-
-    render_manpages(path, &cmd)?;
-
-    Ok(())
+    opts.subcommand.run()
 }
